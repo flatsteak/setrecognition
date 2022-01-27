@@ -1,3 +1,4 @@
+import random
 from dataclasses import dataclass
 from enum import Enum
 
@@ -32,6 +33,14 @@ class Card:
     def shorthand(self) -> str:
       return f'{self.color.value}{self.shape.value}{self.fill.value}{self.count.value}'
 
+    @property
+    def systemColor(self):
+      if self.color == Color.RED:
+        return "red"
+      elif self.color == Color.PURPLE:
+        return "purple"
+      return "green"
+      
 def MakeCard(shorthand):
   return Card(
     Color(shorthand[0]),
@@ -39,3 +48,18 @@ def MakeCard(shorthand):
     Fill(shorthand[2]),
     Count(int(shorthand[3])),
   )
+
+# will return all possible cards in a list
+def allCards():
+  deck = list()
+  for s in Shape:
+    for c in Color:
+      for n in Count:
+        for f in Fill:
+          deck.append(Card(c, s, f, n))
+  return deck
+
+def randomBoard():
+  deck = allCards();
+  random.shuffle(deck)
+  return deck

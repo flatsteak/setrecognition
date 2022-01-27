@@ -1,50 +1,56 @@
-from card import Card, Color, Shape, Fill, Count, MakeCard
-import random
-import 
+import PySimpleGUI as sg
+from card import randomBoard, Count
+from constants import WIDTH, SHAPE_WIDTH, HEIGHT, CARD_WIDTH, CARD_HEIGHT
+from shapes import drawShape
 
-card1 = Card(Color.RED, Shape.OVAL, Fill.FILLED, Count.THREE)
-card2 = MakeCard('RO*3')
-card3 = Card(Color.RED, Shape.OVAL, Fill.FILLED, Count.THREE)
+currentBoard = randomBoard()
 
-def isSame(values):
-  return all(item == values[0] for item in values)
+sg.theme('DarkAmber')   # Add a touch of color
+# All the stuff inside your window.
+layout = [
+  [sg.Graph(canvas_size=(WIDTH, HEIGHT), graph_bottom_left=(0, HEIGHT), graph_top_right=(WIDTH, 0), background_color='brown', key='graph')],
+  ]
+
+# https://pysimplegui.readthedocs.io/en/latest/call%20reference/
+# https://pysimplegui.readthedocs.io/en/latest/cookbook/
+# g.DrawRectangle((25,300), (100,280), line_color='purple'  )
+# draw an individual card
+def drawCard(g, card, x, y):
+  print(card.shorthand)
+  g.DrawRectangle((x + 5, y + 5), (x + WIDTH / 4 - 5, y + HEIGHT / 3 - 5), fill_color='white', line_color='white')
+  c = card.systemColor
+  f = card.fill
+  if card.count == Count.ONE:
+    drawShape(g, card.shape, x + WIDTH / 8, y + HEIGHT / 6, c, f)
+  elif card.count == Count.TWO:
+    drawShape(g, card.shape, x + WIDTH / 8 - SHAPE_WIDTH + 12, y + HEIGHT / 6, c, f)
+    drawShape(g, card.shape, x + WIDTH / 8 + SHAPE_WIDTH - 12, y + HEIGHT / 6, c, f)
+  else:
+    drawShape(g, card.shape, x + WIDTH / 8, y + HEIGHT / 6, c, f)
+    drawShape(g, card.shape, x + WIDTH / 8 - SHAPE_WIDTH - 5, y + HEIGHT / 6, c, f)
+    drawShape(g, card.shape, x + WIDTH / 8 + SHAPE_WIDTH + 5, y + HEIGHT / 6, c, f)
+
+def drawBoard(g, cards):
+  cardX = 0
+  cardY = 0
+  for card in cards:
+    drawCard(g, card, cardX, cardY)
+    cardX = cardX + CARD_WIDTH
+    if cardX >= WIDTH:
+      cardY = cardY + CARD_HEIGHT
+      cardX = 0
+
   
-def areUnique(values):
-  return len(set(values)) == len(values)
+# Create the Window
+window = sg.Window('SET Game', layout, finalize=True)
 
-def isSameOrUnique(values):
-  return isSame(values) or areUnique(values)
+graph = window['graph']    
+drawBoard(graph, currentBoard[:12])
+# Event Loop to process "events" and get the "values" of the inputs
+while True:
+    event, values = window.read()
+    if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
+        break
+    print('You entered ', values[0])
 
-def isSet(cards):
-  return isSameOrUnique(list(map(lambda c: c.color, cards))) and \
-    isSameOrUnique(list(map(lambda c: c.fill, cards))) and \
-    isSameOrUnique(list(map(lambda c: c.shape, cards))) and \
-    isSameOrUnique(list(map(lambda c: c.count, cards)))
-
-# will return all possible cards in a list
-def allCards():
-  deck = list()
-  for s in Shape:
-    for c in Color:
-      for n in Count:
-        for f in Fill:
-          deck.append(Card(c, s, f, n))
-  return deck
-
-def randomBoard():
-  deck = allCards();
-  random.shuffle(deck)
-  return deck
-
-def allSets(cards):
-  l = len(cards)
-  for card1Index, card1 in enumerate(cards[:l-2]):
-    for card2Index, card2 in enumerate(cards[card1Index+1:l-1]):
-      for card3 in cards[card2Index+1:]:
-        if isSet((card1, card2, card3)):
-          print(card1.shorthand, card2.shorthand, card3.shorthand)
-    
-allSets(randomBoard()[:12])
-
-def describeCard(card):
-  
+window.close()

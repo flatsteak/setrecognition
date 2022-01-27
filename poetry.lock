@@ -1,0 +1,30 @@
+[[package]]
+name = "pysimplegui"
+version = "4.56.0"
+description = "Python GUIs for Humans. Launched in 2018. It's 2022 & PySimpleGUI is an ACTIVE & supported project. Super-simple to create custom GUI's. 325+ Demo programs & Cookbook for rapid start. Extensive documentation. Main docs at www.PySimpleGUI.org. Fun & your success are the focus. Examples using Machine Learning (GUI, OpenCV Integration), Rainmeter Style Desktop Widgets, Matplotlib + Pyplot, PIL support, add GUI to command line scripts, PDF & Image Viewers. Great for beginners & advanced GUI programmers."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "remi"
+version = "2021.3.2"
+description = "Python REMote Interface library"
+category = "main"
+optional = false
+python-versions = "*"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.8"
+content-hash = "b507b0a4022b84718b6d4d7fd274d74ecba4cf980dde84168f767439907de5cf"
+
+[metadata.files]
+pysimplegui = [
+    {file = "PySimpleGUI-4.56.0-py3-none-any.whl", hash = "sha256:abd39c0dfd14f8de39e71b3a832cf3ae05b6df993d55fb41362d26e58261208d"},
+    {file = "PySimpleGUI-4.56.0.tar.gz", hash = "sha256:1a13a19282f92626cc6a823cbe9f4aa08aa558870f03441a1c4e8b6cef27c9d5"},
+]
+remi = [
+    {file = "remi-2021.3.2-py3-none-any.whl", hash = "sha256:3591f3073e2cb7fd12b4ab0ac78b4f6505eb7093a92446164314323919c03b11"},
+    {file = "remi-2021.3.2.tar.gz", hash = "sha256:c8691f007dc30b91013131b6aded3521c17ef8ec9fdd152a0ad481b8cb793f14"},
+]
